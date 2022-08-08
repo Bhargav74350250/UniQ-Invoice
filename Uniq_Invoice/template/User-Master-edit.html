@@ -1,0 +1,628 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0">User Master </h4>
+
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard </a>
+                                            </a></li>
+                                        <li class="breadcrumb-item active">User Master</li>
+                                    </ol>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+                    <div class="row">
+                        <div class="col">
+
+                            <div class="h-100">
+                                <div class="row mb-3 pb-1">
+                                    <div class="col-12">
+                                        <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+
+
+                                        </div><!-- end card header -->
+                                    </div>
+                                    <!--end col-->
+                                </div>
+                                <!--end row-->
+
+                                <div class="row">
+                                    <div class="col-lg-10 offset-1 ">
+                                        <div class="card" style="padding:25px;">
+                                            <div class="card-header align-items-center d-flex">
+                                                <h1 class="card-title mb-0 flex-grow-1">User Update </h1>
+                                                <p><span  class="required"></span> field are required</p>
+
+                                            </div><!-- end card header -->
+                                            <form action="{% url 'ItemMaster:user_edit' u_edit.id %}" method="POST" onsubmit="return validateForm()"  name="myForm">
+                                                {% csrf_token %}
+                                            <div class="card-body">
+                                                <div class="live-preview">
+                                                    <div class="row gy-4">
+
+                                                        <div class="col-xxl-6 col-md-6">
+                                                            <div id= "fname">
+                                                                <label for="exampleInputrounded" class="required">
+                                                                    First Name </label>
+                                                                <input type="text" class="form-control rounded-pill" onfocusout="ValidateName()" onkeyup="ValidateName()"
+                                                                    id="exampleInputrounded" name="firstname" value="{{u_edit.First_name}}"
+                                                                    placeholder="Enter   First Name" >
+                                                                    <span id="Fname1" class="formerror"></span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-xxl-6 col-md-6">
+                                                            <div id="lname">
+                                                                <label for="exampleInputrounded" class="required">
+                                                                    Last Name </label>
+                                                                <input type="text" class="form-control rounded-pill" onfocusout="ValidateLastName()" onkeyup="ValidateLastName()"
+                                                                    id="exampleInputrounded" name="lastname" value="{{u_edit.Last_name}}"
+                                                                    placeholder="Enter   Last Name" >
+                                                                    <span id="Lname1" class="formerror"></span>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-xxl-6 col-md-6">
+                                                            <div id="Contact">
+                                                                <label for="exampleInputrounded"
+                                                                    class="required">Mobile Number :</label>
+                                                                <input type="text" class="form-control rounded-pill" maxlength="10" onfocusout="ValidateContact()"  onkeyup="ValidateContact()" onkeypress="return onlyNumberKey(event)"
+                                                                    id="exampleInputrounded" name="Mob_num" value="{{u_edit.phone_number}}"
+                                                                    placeholder="Enter  mobile number">
+                                                                    <span id="Cont1" class="formerror"></span>
+
+                                                            </div>
+                                                        </div>
+                                                      
+                                                        
+                                                        <div class="col-xxl-6 col-md-6">
+                                                            <div id="Email">
+                                                                <label for="exampleInputrounded"
+                                                                    class="required">Email</label>
+                                                                <input type="email" class="form-control rounded-pill"  onfocusout="ValidateEmail()" onkeyup="ValidateEmail()"
+                                                                    id="exampleInputrounded" name="email" value="{{u_edit.email_address}}"
+                                                                    placeholder="Enter e-mail Address" >
+                                                                    <span id="email12" class="formerror"></span>
+
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-xxl-6 col-md-6">
+                                                            <div id="psw">
+                                                                <label for="exampleInputrounded"
+                                                                    class="required">Password </label>
+                                                                <input type="password" class="form-control rounded-pill" onfocusout="ValidatePassword()" onkeyup="ValidatePassword()"
+                                                                id="myInput" name="Password"  value="{{u_edit.password}}" 
+                                                                    placeholder="Enter Password ">
+                                                                    
+                                                                    <span id="PSW1" class="formerror"></span>
+
+                                                        </div>
+                                                       <input type="checkbox" onclick="myFunction()" >Show Password
+                                                        
+                                                        </div>
+
+                                                         <div class="col-xxl-6 col-md-6">
+                                                            <div id="cpsw">
+                                                                <label for="exampleInputrounded" class="required">
+                                                                    Conform Password  </label>
+                                                                <input type="password" class="form-control rounded-pill" onfocusout="ValidateConfirmPsw()" onkeyup="ValidateConfirmPsw()"
+                                                                    id="exampleInputrounded" name="Cpassword"
+                                                                    placeholder="conform Password" >
+                                                                    <span id="CPSW1" class="formerror"></span>
+                                                            </div>
+                                                        </div>
+                        
+
+                                                        
+                                                        <br>
+                                                        <br>
+                                                        <div class="col gy-4" align="center" >
+                                                            <button class="btn btn-primary"  name="submit"> Update </button>
+                                                            <button type="Cancel"  onclick="javascript:window.location='{% url 'ItemMaster:user_data' %}';" class="btn btn-danger" name="Cancel"> Cancel </button>
+                                                        </div>
+                                                    </div>
+                                                    <!--end row-->
+                                                </div>
+
+                                            </div>
+                                        </form>
+                                       
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                            </div>
+
+
+                        </div> <!-- end .h-100-->
+
+                    </div> <!-- end col -->
+
+                    <!-- end col -->
+                </div>
+
+            </div>
+            <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+
+       
+    <script>
+
+        function clearErrors() {
+
+            errors = document.getElementsByClassName('formerror');
+            for (let item of errors) {
+                item.innerHTML = "";
+            }
+
+
+        }
+        function seterror(id, error) {
+            //sets error inside tag of id 
+            element = document.getElementById(id);
+            element.getElementsByClassName('formerror')[0].innerHTML = error;
+
+        }
+        function validateForm() {
+            var returnval = true;
+            clearErrors();
+            var passwordregex = /^(.{0,7}|[^0-9]*|[^A-Z]*|[a-zA-Z0-9]*)$/;
+            var emailRegex = new RegExp(
+                /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
+            );
+            var numberRegex = new RegExp("[0-9]");
+            var contactRegex = new RegExp("[6789][0-9]{9}");
+
+            var numRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+
+            var name = document.forms['myForm']["firstname"].value;
+            if (name.match(numRegex)) {
+                seterror("fname", "Special Characters are not allowed");
+                returnval = false;
+            }
+            var name = document.forms['myForm']["firstname"].value;
+            if (name.match(numberRegex)) {
+                seterror("fname", "only characters are allowed");
+                returnval = false;
+            }
+            var name = document.forms['myForm']["firstname"].value;
+            if (name.length > 20) {
+                seterror("fname", "Input must be less than 20 characters");
+                returnval = false;
+            }
+
+            var name = document.forms['myForm']["firstname"].value;
+            if (name.length == "") {
+                seterror("fname", "This field is required");
+                returnval = false;
+            }
+
+            var lastname = document.forms['myForm']["lastname"].value;
+            if (lastname.match(numRegex)) {
+                seterror("lname", "Special Characters are not allowed");
+                returnval = false;
+            }
+
+
+            var lastname = document.forms['myForm']["lastname"].value;
+            if (lastname.match(numberRegex)) {
+                seterror("lname", "only characters are allowed");
+                returnval = false;
+            }
+
+            var lastname = document.forms['myForm']["lastname"].value;
+            if (lastname.length > 20) {
+                seterror("lname", "Input must be less than 20 characters");
+                returnval = false;
+            }
+            var lastname = document.forms['myForm']["lastname"].value;
+            if (lastname.length == "") {
+                seterror("lname", "This field is required");
+                returnval = false;
+            }
+
+            var contact = document.forms['myForm']["Mob_num"].value;
+
+            if (contact.length == "") {
+                seterror("Contact", "This field is required");
+                returnval = false;
+            }
+
+            else if (contact.match(contactRegex) == null) {
+                seterror("Contact", "contact no is invalid");
+                returnval = false;
+            }
+
+
+            else if (contact.length != 10) {
+                seterror("Contact", "input must in 10 digits");
+                returnval = false;
+            }
+
+
+            else if (isNaN(contact)) {
+                seterror("Contact", "only digits are allowed");
+                returnval = false;
+            }
+
+            var email = document.forms['myForm']["email"].value;
+            if (!email.match(emailRegex)) {
+                seterror("Email", "*Email is invalid");
+                returnval = false;
+            }
+
+            var email = document.forms['myForm']["email"].value;
+            if (email.length == "") {
+                seterror("Email", " This field is required");
+                returnval = false;
+            }
+
+            var email = document.forms['myForm']["email"].value;
+            if (email.length > 50) {
+                seterror("Email", "Email length is too long");
+                returnval = false;
+            }
+
+
+            var password = document.forms['myForm']["Password"].value;
+            if (password.match(passwordregex)) {
+                seterror("psw", "Make a strong password, 8 characters, including a uppercase letter, number and one special character.");
+                returnval = false;
+
+            }
+
+            var password = document.forms['myForm']["Password"].value;
+            if (password.length < 8) {
+
+
+                seterror("psw", "Password should be atleast 8 characters long!");
+                returnval = false;
+            }
+
+            var password = document.forms['myForm']["Password"].value;
+            if (password.length == "") {
+
+
+                seterror("psw", " This field is required");
+                returnval = false;
+            }
+
+            var password = document.forms['myForm']["Password"].value;
+            var Cpassword = document.forms['myForm']["Cpassword"].value;
+            if (Cpassword != password) {
+
+
+                seterror("cpsw", " Password doesn't match");
+                returnval = false;
+            }
+
+
+
+
+            var Cpassword = document.forms['myForm']["Cpassword"].value;
+            if (Cpassword.length == "") {
+
+
+                seterror("cpsw", " This field is required");
+                returnval = false;
+            }
+
+
+           
+            return returnval;
+        }
+
+    </script>
+        
+        <script>
+
+            function ValidateName() {
+                var numberRegex = new RegExp("[0-9]");
+                var numRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+
+                var name = document.forms['myForm']["firstname"].value;
+                if (name.match(numRegex)) {
+                    seterror("fname", "Special Characters are not allowed");
+                    returnval = false;
+                }
+                else {
+    
+                    errors = document.getElementById("Fname1");
+    
+                    errors.innerHTML = "";
+    
+                }
+    
+    
+                var name = document.forms['myForm']["firstname"].value;
+                if (name.match(numberRegex)) {
+                    seterror("fname", "only characters are allowed");
+                    returnval = false;
+                }
+    
+    
+    
+    
+    
+    
+    
+                var name = document.forms['myForm']["firstname"].value;
+                if (name.length == "") {
+                    seterror("fname", "This field is required");
+                    returnval = false;
+                }
+    
+    
+    
+    
+    
+    
+                var name = document.forms['myForm']["firstname"].value;
+                if (name.length > 20) {
+                    seterror("fname", "Input must be less than 20 characters");
+                    returnval = false;
+                }
+    
+                return returnval;
+            }
+    
+    
+    
+    
+        </script>
+
+        <script>
+            function ValidateLastName() {
+                var numberRegex = new RegExp("[0-9]");
+                var numRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    
+    
+                var lastname = document.forms['myForm']["lastname"].value;
+                if (lastname.match(numRegex)) {
+                    seterror("lname", "Special Characters are not allowed");
+                    returnval = false;
+                }
+                else {
+    
+                    errors = document.getElementById("Lname1");
+    
+                    errors.innerHTML = "";
+    
+                }
+    
+                var lastname = document.forms['myForm']["lastname"].value;
+                if (lastname.match(numberRegex)) {
+                    seterror("lname", "only characters are allowed");
+                    returnval = false;
+                }
+    
+    
+    
+    
+                var lastname = document.forms['myForm']["lastname"].value;
+                if (lastname.length == "") {
+                    seterror("lname", "This field is required");
+                    returnval = false;
+                }
+                var lastname = document.forms['myForm']["lastname"].value;
+                if (lastname.length > 20) {
+                    seterror("lname", "Input must be less than 20 characters");
+                    returnval = false;
+                }
+    
+                return returnval;
+            }
+    
+        </script>
+
+       
+        <script>
+            function ValidateContact() {
+                var contactRegex = new RegExp("[6789][0-9]{9}");
+    
+    
+                var contact = document.forms['myForm']["Mob_num"].value;
+    
+                if (contact.length == "") {
+                    seterror("Contact", "This field is required");
+                    returnval = false;
+                }
+                else if (contact.length != 10) {
+                    seterror("Contact", "input must be in 10 digits");
+                    returnval = false;
+                }
+                else if (isNaN(contact)) {
+                    seterror("Contact", "only digits are allowed");
+                    returnval = false;
+                }
+                else if (contact.match(contactRegex) == null) {
+                    seterror("Contact", "contact no is invalid");
+                    returnval = false;
+                }
+    
+    
+                else {
+    
+                    errors = document.getElementById("Cont1");
+    
+                    errors.innerHTML = "";
+    
+                }
+    
+    
+                return returnval;
+            }
+    
+    
+    
+        </script>
+
+        <script>
+
+            function ValidateEmail() {
+    
+                var emailRegex = new RegExp(
+                    /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
+                );
+                var email = document.forms['myForm']["email"].value;
+                if (!email.match(emailRegex)) {
+                    seterror("Email", "Email is invalid");
+                    returnval = false;
+                }
+    
+                else {
+    
+                    errors = document.getElementById("email12");
+    
+                    errors.innerHTML = "";
+    
+                }
+    
+    
+    
+                var email = document.forms['myForm']["email"].value;
+                if (email.length == "") {
+                    seterror("Email", " This field is required");
+                    returnval = false;
+                }
+    
+    
+    
+                var email = document.forms['myForm']["email"].value;
+                if (email.length > 50) {
+                    seterror("Email", "Email length is too long");
+                    returnval = false;
+                }
+
+    
+    
+                return returnval;
+            }
+
+    
+        </script>
+
+        <script>
+
+            function ValidatePassword() {
+                var passwordregex = /^(.{0,7}|[^0-9]*|[^A-Z]*|[a-zA-Z0-9]*)$/;
+    
+                var password = document.forms['myForm']["Password"].value;
+                if (password.match(passwordregex)) {
+                    seterror("psw", "Make a strong password, 8 characters, including a uppercase letter, number and one special character.");
+                    returnval = false;
+    
+                }
+                else {
+    
+                    errors = document.getElementById("PSW1");
+    
+                    errors.innerHTML = "";
+    
+                }
+    
+                var password = document.forms['myForm']["Password"].value;
+                if (password.length < 8) {
+    
+    
+                    seterror("psw", "Password should be atleast 8 characters long!");
+                    returnval = false;
+                }
+    
+                var password = document.forms['myForm']["Password"].value;
+                if (password.length == "") {
+    
+    
+                    seterror("psw", " This field is required");
+                    returnval = false;
+                }
+    
+    
+                return returnval;
+            }
+    
+
+    
+        </script>
+
+
+        <script>
+            function ValidateConfirmPsw() {
+                var password = document.forms['myForm']["Password"].value;
+                var Cpassword = document.forms['myForm']["Cpassword"].value;
+                if (Cpassword != password) {
+    
+    
+                    seterror("cpsw", " Password doesn't match");
+                    returnval = false;
+                }
+                else {
+    
+                    errors = document.getElementById("CPSW1");
+    
+                    errors.innerHTML = "";
+    
+                }
+    
+
+    
+                var Cpassword = document.forms['myForm']["Cpassword"].value;
+                if (Cpassword.length == "") {
+    
+    
+                    seterror("cpsw", " This field is required");
+                    returnval = false;
+                }
+
+    
+                return returnval;
+            }
+    
+    
+    
+    
+        </script>
+
+        <script>
+            function myFunction() {
+              var x = document.getElementById("myInput");
+              if (x.type === "password") {
+                x.type = "text";
+              } else {
+                x.type = "password";
+              }
+            }
+            </script>
+
+
+        <script>
+            function onlyNumberKey(evt) {
+    
+                // Only ASCII character in that range allowed
+                var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+                if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+                    return false;
+                return true;
+            }
+        </script>
+{% endblock %}
