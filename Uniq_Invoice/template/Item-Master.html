@@ -58,11 +58,12 @@
                                             <div class="card-body">
                                                 <div class="live-preview">
                                                     <div class="row gy-4">
-                                                        <div class="col-lg-12" >
+                                                        {% comment %} <div class="col-xxl-6 col-md-6">
                                                             <div class="input-group" >
                                                                 <label class="input-group-text" for="inputGroupSelect01">Warehouse</label>
-                                                                <select class="form-select" name="warehousename"  onfocusout="Validatewarehouse()" id="inputGroupSelect01">
-                                                                   {% comment %} <option selected="">Choose...</option> {% endcomment %}
+                                                                <select class="form-select" name="warehousename"  id="inputGroupSelect01">
+                                                                  
+                                                                   <option selected="">Choose...</option>
                                                                     {% for i in  wid %}
 
                                                                     <option value="{{i.id}}">{{i.warehouse_name}}</option>
@@ -71,6 +72,55 @@
                                                                     
                                                                 </select>
                                                               
+                                                            </div>
+                                                        </div> {% endcomment %}
+
+                                                        <div class="col-xxl-6 col-md-6">
+                                                            <div id="waer">
+                                                                <label for="exampleInputrounded" class="required">
+                                                                    Warehouse : </label>
+                                                                    <input type="text" class="form-control rounded-pill"  onfocusout="Validatewarehouse()"  onkeyup="Validatewarehouse()" name="warehousename" placeholder="Choose Warehouse"  list="Warehouse" />
+                                                                    <datalist id="Warehouse" >
+                                                                        <optgroup label=" Warehouse">
+                                                                            {% for i in  wid %}
+
+                                                                            <option >{{i.warehouse_name}}</option>
+                                                                            
+                                                                            {% endfor %}
+                                                                    </datalist>
+                                                                    <span id="waer1" class="formerror"></span>
+                                                            </div>
+                                                        </div>
+
+                                                        {% comment %} <div class="col-xxl-6 col-md-6">
+                                                            <div class="input-group" >
+                                                                <label class="input-group-text" for="inputGroupSelect01">Vehicle Type</label>
+                                                                <select class="form-select" name="vehicletype"   id="inputGroupSelect01">
+                                                                   <option selected="">Choose...Vehicle Type </option> 
+                                                                    <option value="2 wheeler">2 wheeler</option>
+                                                                    <option value="Car">car</option>
+                                                                    <option value="Tractor">Tractor</option>
+                                                                    <option value="Truck">Truck</option>
+                                                                   
+                                                                                                                                        
+                                                                </select>
+                                                              
+                                                            </div>
+                                                        </div> {% endcomment %}
+
+                                                        <div class="col-xxl-6 col-md-6">
+                                                            <div id="vehicle">
+                                                                <label for="exampleInputrounded" class="required">
+                                                                    Vehicle Type: </label>
+                                                                    <input type="text" class="form-control rounded-pill"   onfocusout="Validatevehicle()"  onkeyup="Validatevehicle()" placeholder="Choose vehicletype " name="vehicletype"  list="vehicletype" />
+                                                                    <datalist id="vehicletype" >
+                                                                        <optgroup label=" vehicletype">
+                                                                        <option>2 wheeler</option>
+                                                                        <option>car</option>
+                                                                        <option> Tractor</option>
+                                                                        <option> Truck</option>
+                                                                    </datalist>
+                                                                    <span id="vehicle1" class="formerror"></span>
                                                             </div>
                                                         </div>
 
@@ -155,9 +205,17 @@
                                                             <div id="btry">
                                                                 <label for="exampleInputrounded" class="required">
                                                                     Battery Type: </label>
-                                                                <input type="text" class="form-control rounded-pill"
-                                                                    id="exampleInputrounded" name="battery" onfocusout="ValidateBattery()" onkeyup="ValidateBattery()"
-                                                                    placeholder="Enter your battery type">
+                                                                    <input type="text" class="form-control rounded-pill" placeholder="Choose Battery type "  onfocusout="ValidateBattery()"   onkeyup="ValidateBattery()" name="battery" list="battery" />
+                                                                    <datalist  id="battery">
+                                                                        <optgroup label=" Cars">
+                                                                        <option>Flooded Lead Acid Battery (Wet Cell)</option>
+                                                                        <option>Silver Calcium Battery</option>
+                                                                        <option> Enhanced Flooded Battery (EFB)</option>
+                                                                        <option> Absorbent Glass Mat Battery (AGM)</option>
+                                                                        <option> Deep Cycle Battery</option>
+                                                                        <option>Lithium Ion (Li-Ion) Battery </option>
+                                                                        <option> Nickel Metal Hydride Battery</option>
+                                                                    </datalist>
                                                                     <span id="battery1" class="formerror"></span>
                                                             </div>
                                                         </div>
@@ -241,6 +299,19 @@
             clearErrors();
             var numRegex = /[!@#$%^&*_+\-=\[\]{};':"\\|,<>\/?]+/;
             var numberRegex = new RegExp("[0-9]");
+
+
+            var warehousename  = document.forms['itemadd']["warehousename"].value;
+            if (warehousename.length == "") {
+                seterror("waer", "This field is required");
+                returnval = false;
+            }
+
+            var vehicletype = document.forms['itemadd']["vehicletype"].value;
+            if (vehicletype.length == "") {
+                seterror("vehicle", "This field is required");
+                returnval = false;
+            }
             
             var iname = document.forms['itemadd']["itemname"].value;
             if (iname.match(numRegex)) {
@@ -342,11 +413,7 @@
                 seterror("btry", "This field is required");
                 returnval = false;
             }
-            var Btype = document.forms['itemadd']["battery"].value;
-            if (Btype.length > 150) {
-                seterror("btry", "Input must be less than 150  characters");
-                returnval = false;
-            }
+           
 
             var Ampear = document.forms['itemadd']["ampear"].value;
 
@@ -377,7 +444,49 @@
         </script>
     
        
+
+
+        <script>
+            function Validatewarehouse() {
+                var warehousename = document.forms['itemadd']["warehousename"].value;
+                if (warehousename.length == "") {
+                    seterror("waer", "This field is required");
+                    returnval = false;
+                }
+                else {
     
+                    errors = document.getElementById("waer1");
+    
+                    errors.innerHTML = "";
+    
+                }
+    
+    
+                return returnval;
+            }
+        </script>
+
+        <script>
+            function Validatevehicle() {
+                var vehicle = document.forms['itemadd']["vehicletype"].value;
+                if (vehicle.length == "") {
+                    seterror("vehicle", "This field is required");
+                    returnval = false;
+                }
+                else {
+    
+                    errors = document.getElementById("vehicle1");
+    
+                    errors.innerHTML = "";
+    
+                }
+    
+    
+                return returnval;
+            }
+        </script>
+
+
     
             <script>
     
@@ -614,11 +723,6 @@
     
                     errors.innerHTML = "";
     
-                }
-                var Btype = document.forms['itemadd']["battery"].value;
-                if (Btype.length > 100) {
-                    seterror("btry", "Input must be less than 100  characters");
-                    returnval = false;
                 }
     
     

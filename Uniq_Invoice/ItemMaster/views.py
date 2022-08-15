@@ -21,6 +21,7 @@ def add_item(request):
             
             warehousename=request.POST.get('warehousename')
             itemname=request.POST.get('itemname')
+            vehicletype=request.POST.get('vehicletype')
             itemdescription=request.POST.get('itemdescription')
             modelname=request.POST.get('modelname')
             manufecturedate=request.POST.get('manufectuerdate')
@@ -37,11 +38,12 @@ def add_item(request):
             cid = Company_Master.objects.get(id=request.session['id'])
             print("Dates = ", manufecturedate, receivingdata)
             wid= Warehouse_Master.objects.get(id = warehousename)
-
+            print("wid :" ,wid )
 
             Item_Master.objects.create(        
                                                 company_id = cid,
                                                 warehouse_id = wid,
+                                                vehicle_type=vehicletype,
                                                 item_name = itemname,
                                                 item_description = itemdescription,
                                                 model_name = modelname,
@@ -106,7 +108,7 @@ def itemedit(request,pk):
             print("date and time:",r_date)	
             return render (request,"Item-master_edit.html",{"warehousedata":warehousedata,"imt":imt,'itm_mdate':itm_mdate,'r_date':r_date,'m_date':m_date,'itm_rdate':itm_rdate,'itm_date': itm_mdate})
         elif request.method=="POST":
-            
+            vehicletype=request.POST['vehicletype']
             itemname=request.POST['itemname']
             itemdescription=request.POST['itemdescription']
             modelname=request.POST['modelname']
@@ -122,6 +124,7 @@ def itemedit(request,pk):
 
             imt= Item_Master.objects.get(id = pk)
             imt.item_name=itemname
+            imt.vehicle_type=vehicletype
             imt.item_description=itemdescription
             imt.model_name=modelname
             imt.manufecture_date=manufecturedate
@@ -394,52 +397,88 @@ import os
 
 from django.views.generic import TemplateView, FormView, CreateView, ListView, UpdateView, DeleteView, DetailView, View
 
-def fetch_resources(uri, rel):
-    path = os.path.join(uri.replace(settings.STATIC_URL, ""))
-    return path
 
-def render_to_pdf(template_src, context_dict={}):
-    template = get_template(template_src)
-    html  = template.render(context_dict)
-    result = BytesIO()
-    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)#, link_callback=fetch_resources)
-    if not pdf.err:
-        return HttpResponse(result.getvalue(), content_type='application/pdf')
-    return None
+def weekreportpdf(request):
+    # try:
+        if 'id' in request.session:
+            lid = Login_Master.objects.get(id = request.session['id'])
+            companyname = Company_Master.objects.get(id = lid.Company_id_id)
 
-
-class GenerateInvoice(View):
-    def get(self, request, pk, *args, **kwargs):
-        # try:
-        #     order_db = Order.objects.get(id = pk, user = request.user, payment_status = 1)     #you can filter using order_id as well
-        # except:
-        #     return HttpResponse("505 Not Found")
-        # data = {
-        #     'order_id': order_db.order_id,
-        #     'transaction_id': order_db.razorpay_payment_id,
-        #     'user_email': order_db.user.email,
-        #     'date': str(order_db.datetime_of_payment),
-        #     'name': order_db.user.name,
-        #     'order': order_db,
-        #     'amount': order_db.total_amount,
-        # }
-        name='Bhargav'
-        data={'name':name}
-        pdf = render_to_pdf('Invoice-Pdf.html')
-        #return HttpResponse(pdf, content_type='application/pdf')
-
-        # force download
-        if pdf:
-            response = HttpResponse(pdf, content_type='application/pdf')
-            filename = "Invoice_%s.pdf" %(data['order_id'])
-            content = "inline; filename='%s'" %(filename)
-            #download = request.GET.get("download")
-            #if download:
-            content = "attachment; filename=%s" %(filename)
-            response['Content-Disposition'] = content
+            # Dealer=Dealer_Master.objects.get(id=)
+            timestamp = datetime.today().strftime("%d-%m-%Y %H:%M:%S")
+            # month = datetime.strptime(week.month, "%m")
+            # context = {'data': work_hour, 'dates':work_hour_date, 'month':month.strftime("%B"), 'name': user_name, 'timestamp': timestamp,}
+            name='bhargav'
+            context={'name':name}
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = 'filename="report.pdf"'
+            template = get_template('Invoice-Pdf.html')
+            html = template.render(context)
+            pisa_status = pisa.CreatePDF(html, dest=response)
+            if pisa_status.err:
+                return HttpResponse('We had some errors.')
             return response
-        return HttpResponse("Not found")
+    #     else:
+    #         messages.warning(request, "invalid user")
+    #         return render(request,"Login_Employee.html")
+    # except AttributeError:
+    #     messages.error(request, 'select date')
+    #     return render(request, 'week.html', context = {'name': user_name})
+    # except KeyError:
+    #         messages.error(request, 'You have to login first')
+    #         return render(request, 'Login_Employee.html')
+    # except Exception as e:
+    #     print('weekreportpdf:', e)
+    #     messages.warning(request, "there is an error")
+    #     return render(request,"week.html",{'name': user_name})
 
 
 
+def Add_Payment_Master(request,pk):
+    Due_Payment=0
+    if 'id' in request.session:
+  
+        if request.method ==  "GET" :
+        
+            Invoice = INVOICE_MASTER.objects.get(id=pk)
+            inv_details_data=INVOICE_DETAILS.objects.all()
+            lid = Login_Master.objects.get(id = request.session['id'])
+            companyname = Company_Master.objects.get(id = lid.Company_id_id)
+            return render(request,"add-payment.html",{'Invoice':Invoice,'inv_details_data':inv_details_data,'companyname':companyname})
+        else:
+        
+            date=request.POST['arrvingdate']
+            
+            Amount=request.POST['amount']
 
+            Payment_Type=request.POST['paymenttype'] 
+            Invoice = INVOICE_MASTER.objects.get(id=pk)
+            Dealer_Id=Invoice.DealerId
+            PAYMENT_MASTER.objects.create(   Invoice_Id =Invoice ,
+                                    Dealer_Id = Dealer_Id,
+                                    Payment_Id    =  Payment_Type,
+                                    Amount = Amount ,
+                                    Payment_Date=date
+            )
+            PAYMENT_MASTER.objects.all()
+            Invoice = INVOICE_MASTER.objects.get(id=pk)
+            amt=Invoice.DueAmount
+            print("amt    :",amt)
+            Invoice.DueAmount=int(amt)-int(Amount)
+            Invoice.save()
+          
+            inv_details_data=INVOICE_DETAILS.objects.all()
+            return render(request,"Payment-Master-Data.html",{'inv_details_data':inv_details_data})
+    else:
+        return redirect('/companylogin/')
+
+def Payment_Master(request):
+        inv_details_data=INVOICE_DETAILS.objects.all()
+        
+
+        return render(request,"Payment-Master-Data.html",{'inv_details_data':inv_details_data})
+
+
+def Payment_Details(request):
+    payment_details=PAYMENT_MASTER.objects.all()
+    return render(request,"Payment-Details.html",{'payment_details':payment_details})
