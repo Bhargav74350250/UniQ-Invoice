@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+        <div class="main-content">
+            <div class="page-content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0">credit Master </h4>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="h-100">
+                                <div class="row mb-3 pb-1">
+                                    <div class="col-12">
+                                        <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-10 offset-1 ">
+                                        <div class="card" style="padding:25px;">
+                                            <div class="card-header align-items-center d-flex">
+                                                
+                                            </div>
+                                        {% for x in creditdata %}
+                                        <form name="itemadd" method="POST" action="{% url 'ItemMaster:edit_credit_note' id=x.id %}"  onsubmit="return validateForm()" >
+                                            {% csrf_token %}
+                                            
+                                            
+                                            <div class="card-body">
+                                                <div class="live-preview">
+                                                    <div class="row gy-12">
+                                                        <div class="col-xxl-6 col-md-6">
+                                                            <div>
+                                                                <label style="font-size: 15;"><b>Dealer Name </b></label>
+                                                                <!-- <p ><b>Dealer :- </b> {{x.DealerId.dealre_name}}</p> -->
+                                                                <input type="text" name="dealer" value = "{{x.DealerId.dealre_name}}" >
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xxl-6 col-md-6">
+                                                            <label style="font-size: 15;"><b>Invoice Number </b></label>
+                                                            <input type="text" name="inno" value = "{{x.Invoice_id.InvoiceNo}}" >
+
+                                                            <!-- <p style="font-size: 15;"><b>Invoice Numver :- </b> {{x.Invoice_id.InvoiceNo}}</p> -->
+                                                        </div>
+                                                    </div>
+                                                    <div id ='invoicedata'>
+
+                                                    </div>
+
+                                                    <table class="table table-bordered table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td><b>Item Name</b></td>
+                                                                <td><b>Item Description</b></td>
+                                                                <td><b>Model Name</b></td>
+                                                                <td><b>Ampear</b></td>
+                                                                <td><b>Quantity</b></td>
+                                                                <td><b>Price</b></td>
+                                                                <td><b>Total</b></td>
+                                                                <td><b>Delete</b></td>
+                                                                
+
+                                                            </tr>
+                                                        </thead>
+                                                        {% for y in creditdetail %}
+                                                        {% if x.Invoice_id == y.Invoiceid %}
+                                                        <tbody>
+                                                            <tr>
+                                                                
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td>{{y.Item_id.item_name}}</td>
+                                                                    <td>{{y.Item_id.item_description}}</td>
+                                                                    <td>{{y.Item_id.model_name}}</td>
+                                                                    <td>{{y.Item_id.Ampear}}</td>
+                                                                    <td>{{y.Quantity}}</td>
+                                                                    <td>{{y.Rate}}</td>
+                                                                    <td>{{x.CreditNoteAmount}}</td>
+                                                                    <td align="center"><a href="{% url 'ItemMaster:delete_credit_selecteditem' id=y.id %}"><i class="fa fa-trash-o" aria-hidden="true" style="font-size:24px;color:red"></i></a></td>
+
+                                                                
+
+                                                            </tr>
+                                                        </tbody>
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                        <tbody id="tbody" >
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                
+
+                                            </div>
+                                            
+
+                                            <center><button type="submit" class="btn btn-primary">update</button></center>
+                                        </form>
+                                        {% endfor %}
+
+                                    </div>
+                                    </div>
+                                </div>
+                                {% for message in messages %}
+                                    {%if "successadded" in message.tags %}
+                                        <div class="message">
+                                            <center><h4><p style = "color:green"> {{message}} </p> </h4></center>
+                                            <a href="#" class="del-msg">&times;</a>
+                                        </div>
+                                    {%endif%}
+                                    {% endfor %}
+                            </div>
+                        </div> 
+                    </div> 
+                </div>
+            </div>
+        </div>
+        <!-- <script>
+            $("#dealerinfo").change(function () {
+                const dealinfo = $(this).val(); 
+                console.log(dealinfo);
+                output=""
+                $.ajax({                       
+                    type: "POST",
+                    url: '/dealersinvoice/',
+                    data: {
+                        'dealinfo': dealinfo,      
+                        'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: function (response){
+                        $("#dealersinvoice").empty();
+                        console.log(response.invoicedata)
+                        
+                        x=response.invoicedata
+              
+                        var select = document.getElementById('dealersinvoice');
+                        var option;
+                        for (var i = 0; i < x.length; i++) { 
+                            console.log(x[i].invoice_number) 
+                            
+                            
+                            option = document.createElement('option');
+                            option.text = x[i]["invoice_number"];
+                            select.add(option);
+                        
+                        }  
+                        
+                 
+                     },
+                });
+            });
+        
+        </script> -->
+
+<!-- invoice show as per dropdown -->
+        <!-- <script>
+            $("#dealersinvoice").change(function () {
+                const selinvoicenumber = $(this).val(); 
+                console.log(selinvoicenumber);
+                output=""
+                $.ajax({                       
+                    type: "POST",
+                    url: '/get_invoice_data/',
+                    data: {
+                        'selectedinvoice': selinvoicenumber,      
+                        'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: function (response){
+                        
+                        console.log(response.invoicedetaildata)
+                        console.log(response.allitems)
+                        $("#tbody").empty();
+                        $("#tbody").append
+
+                        
+                        
+                            x=response.invoicedetaildata
+                            y=response.allitems
+                            console.log(y)    
+                                for (j = 0; j<y.length; j++){
+                                    for (i = 0; i<x.length; i++) {
+                                        if(x[i].Item_id_id ==y[j].id){
+                                            var number_rows = y[j].id
+                                            console.log(typeof(number_rows))
+                                            output+="<tr><td><input type='hidden' name='Itemid'  value='"+y[j].id+"' class='form-control />'"+
+                                                "</td><td><input type='hidden' name='invoicenumber'  value='"+selinvoicenumber+"' class='form-control />'"+
+                                                "</td><td><input type='text' name='Itemname'  value='"+y[j].itemname+"' class='form-control />'"+
+                                                "</td><td><input type='text' name='itemdesc'  value='"+y[j].itemdesc+"' class='form-control />'"+
+                                                "</td><td><input type='text' name='modelname'  value='"+y[j].modelname+"' class='form-control />'"+
+                                                "</td><td><input type='text' name='ampear'  value='"+y[j].ampear+"' class='form-control />'"+
+                                                "</td><td><input type='text' name='Quantity'  value='"+x[i].Quantity+"' class='form-control />'"+
+                                                "</td><td><input type='text' name='price'  value='"+y[j].price+"' class='form-control />'"+
+                                                "</td><td><input type='text' name='Rate'  value='"+x[i].Rate+"' class='form-control />'"+
+                                                "</td><td><a href ='{%url 'ItemMaster:delete_credit_items' %}'>Delete</a>'"+
+                                                "</td> </tr>";
+                                        }
+                                    }        
+                                }
+                            
+                            $("#tbody").append(output);
+                        
+                 
+                    },
+                });
+            });
+        
+        </script> -->
+        <!-- <script>
+            function deleteRow(rowId){
+                table.find("td#row-" + rowId).remove();
+            }
+        </script> -->
+        
+
+{% endblock %}

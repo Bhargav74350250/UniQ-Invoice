@@ -105,7 +105,7 @@
                                                             </div>
                                                         </div>
                                                         
-                                                        <div class="col-xxl-6 col-md-6">
+                                                        {% comment %} <div class="col-xxl-6 col-md-6">
                                                             <div id="psw">
                                                                 <label for="exampleInputrounded"
                                                                     class="required">Password </label>
@@ -118,9 +118,9 @@
                                                         </div>
                                                        <input type="checkbox" onclick="myFunction()" >Show Password
                                                         
-                                                        </div>
+                                                        </div> {% endcomment %}
 
-                                                         <div class="col-xxl-6 col-md-6">
+                                                         {% comment %} <div class="col-xxl-6 col-md-6">
                                                             <div id="cpsw">
                                                                 <label for="exampleInputrounded" class="required">
                                                                     Conform Password  </label>
@@ -129,7 +129,7 @@
                                                                     placeholder="conform Password" >
                                                                     <span id="CPSW1" class="formerror"></span>
                                                             </div>
-                                                        </div>
+                                                        </div> {% endcomment %}
                         
 
                                                         
@@ -284,50 +284,10 @@
             }
 
 
-            var password = document.forms['myForm']["Password"].value;
-            if (password.match(passwordregex)) {
-                seterror("psw", "Make a strong password, 8 characters, including a uppercase letter, number and one special character.");
-                returnval = false;
-
-            }
-
-            var password = document.forms['myForm']["Password"].value;
-            if (password.length < 8) {
+           
 
 
-                seterror("psw", "Password should be atleast 8 characters long!");
-                returnval = false;
-            }
-
-            var password = document.forms['myForm']["Password"].value;
-            if (password.length == "") {
-
-
-                seterror("psw", " This field is required");
-                returnval = false;
-            }
-
-            var password = document.forms['myForm']["Password"].value;
-            var Cpassword = document.forms['myForm']["Cpassword"].value;
-            if (Cpassword != password) {
-
-
-                seterror("cpsw", " Password doesn't match");
-                returnval = false;
-            }
-
-
-
-
-            var Cpassword = document.forms['myForm']["Cpassword"].value;
-            if (Cpassword.length == "") {
-
-
-                seterror("cpsw", " This field is required");
-                returnval = false;
-            }
-
-
+           
            
             return returnval;
         }

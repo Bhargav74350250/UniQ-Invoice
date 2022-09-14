@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0">Payment Master </h4>
+
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard Master
+                                            </a></li>
+                                        <li class="breadcrumb-item active"> Edit Payment Master</li>
+                                    </ol>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+                    <div class="row">
+                        <div class="col">
+
+                            <div class="h-100">
+                                <div class="row mb-3 pb-1">
+                                    <div class="col-12">
+                                        <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+
+
+                                        </div><!-- end card header -->
+                                    </div>
+                                    <!--end col-->
+                                </div>
+                                <!--end row-->
+
+                                <div class="row">
+                                    <div class="col-lg-10 offset-1 ">
+                                        <div class="card" style="padding:25px;">
+                                            <div class="card-header align-items-center d-flex">
+                                                <h1 class="card-title mb-0 flex-grow-1">Edit Payment </h1>
+                                                <p><span  class="required"></span> field are required</p>
+
+                                            </div><!-- end card header -->
+                                        <form name="itemadd" method="POST" action="{% url 'ItemMaster:Edit_Payment' payment_edit.id %}"  onsubmit="return validateForm()"  id="mySmallModal">
+                                                {% csrf_token %}
+                                    
+                                            <div class="card-body">
+                                                <div class="live-preview">
+                                                    <div class="col gy-4" align="center" >
+
+
+                                                        <div class="col-xxl-6 col-md-6">
+                                                            <div id="rdate">
+                                                                <label for="exampleInputrounded"
+                                                                class="required">Arraving date   : </label>
+                                                                <input type="Date" class="form-control rounded-pill"
+                                                                    id="exampleInputrounded" name="arrvingdate"  onfocusout="ValidaterDate()" onchange="ValidaterDate()"
+                                                                    placeholder="Enter your receiving data " value={{p_date}} >
+                                                                    <span id="rdate1" class="formerror"></span>
+                                                                   
+                                                            </div>
+                                                        </div>
+                                                        
+                                                       
+                                                        <div class="col-xxl-6 col-md-6">
+                                                            <div id="qty">
+                                                                <label for="exampleInputrounded"
+                                                                    class="required">Amount  :</label>
+                                                                <input type="text" class="form-control rounded-pill" onkeypress="return onlyNumberKey(event)"
+                                                                    id="exampleInputrounded" name="amount"  onfocusout="ValidateQuantity()" onkeyup="ValidateQuantity()"
+                                                                    placeholder="Enter Amount" value={{payment_edit.Amount}} >
+                                                                    <span id="qty1" class="formerror"></span>
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <br>
+                                                        <div class="col-xxl-6 col-md-6">
+                                                            <div class="input-group" id="pdate" >
+                                                                <label class="input-group-text"  for="inputGroupSelect01" >Payment Type </label>
+                                                                <select class="form-select"   id="exampleInputrounded" name="paymenttype"  onfocusout="Validatewarehouse()" id="inputGroupSelect01">
+                                                                   <option selected="" value={{payment_edit.Payment_Id}} >{{payment_edit.Payment_Id}}</option>
+                                                                  
+                                                                    <option value="Bank">Bank</option>
+                                                                    <option value="Cash">Cash</option>
+                                                                    <option value="Check">Check</option>
+                                                                </select>
+                                                                <span id="pdate1" class="formerror"></span>
+                                                            </div>
+                                                        </div>
+
+                                                         <br>
+                                                        <br>
+                                                       
+                                                            <button class="btn btn-primary" name="submit"> Submit </button>
+                                                            <button type="Cancel"  onclick="javascript:window.location='{% url 'ItemMaster:Payment_Master' %}';" class="btn btn-danger" name="Cancel"> Cancel </button>
+                                                       
+                                                    </div>
+                                                    <!--end row-->
+                                                </div>
+
+                                            </div>
+                                        </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                            </div>
+
+
+                        </div> <!-- end .h-100-->
+
+                    </div> <!-- end col -->
+
+                    <!-- end col -->
+                </div>
+
+            </div>
+            <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+
+      
+
+
+    <script>
+   
+        function clearErrors() {
+    
+            errors = document.getElementsByClassName('formerror');
+            for (let item of errors) {
+                item.innerHTML = "";
+            }
+    
+    
+        }
+        function seterror(id, error) {
+            //sets error inside tag of id 
+            element = document.getElementById(id);
+            element.getElementsByClassName('formerror')[0].innerHTML = error;
+    
+        }
+        function validateForm() {
+            var returnval = true;
+            clearErrors();
+            var numRegex = /[!@#$%^&*_+\-=\[\]{};':"\\|,<>\/?]+/;
+            var numberRegex = new RegExp("[0-9]");
+            
+           
+            var Quantity = document.forms['itemadd']["amount"].value;
+
+            if (Quantity.length == "") {
+                seterror("qty", "This field is required");
+                returnval = false;
+            }
+            else if (isNaN(Quantity)) {
+                seterror("qty", "only digits are allowed");
+                returnval = false;
+            }
+          
+               
+
+
+
+           
+              
+            var rdate2 = document.forms['itemadd']["arrvingdate"].value;
+            if (rdate2.length == "") {
+                seterror("rdate", "This field is required");
+                returnval = false;
+            }
+
+            var pdate = document.forms['itemadd']["paymenttype"].value;
+            if (pdate.length == "") {
+                seterror("pdate", "This field is required");
+                returnval = false;
+            }
+
+           
+              
+                return returnval;
+            }
+    
+        </script>
+    
+       
+    
+    
+    
+        
+    
+       
+    
+       
+    
+        <script>
+            function ValidaterDate() {
+    
+                var rdate2 = document.forms['itemadd']["arrvingdate"].value;
+                if (rdate2.length == "") {
+                    seterror("rdate", "This field is required");
+                    returnval = false;
+                }
+                else {
+    
+                    errors = document.getElementById("rdate1");
+    
+    
+                    errors.innerHTML = "";
+    
+    
+                }
+                return returnval;
+            }
+    
+    
+        </script>
+    
+      
+        <script>
+            function ValidateQuantity() {
+    
+                var Quantity = document.forms['itemadd']["quantity"].value;
+    
+                if (Quantity.length == "") {
+                    seterror("qty", "This field is required");
+                    returnval = false;
+                }
+                else if (isNaN(Quantity)) {
+                    seterror("qty", "only digits are allowed");
+                    returnval = false;
+                }
+                else {
+    
+                    errors = document.getElementById("qty1");
+    
+                    errors.innerHTML = "";
+    
+                }
+    
+    
+                return returnval;
+            }
+    
+        </script>
+    
+        <script>
+            function onlyNumberKey(evt) {
+    
+                // Only ASCII character in that range allowed
+                var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+                if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+                    return false;
+                return true;
+            }
+        </script>
+
+
+{% endblock %}

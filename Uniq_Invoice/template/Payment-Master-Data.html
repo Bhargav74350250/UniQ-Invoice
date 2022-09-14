@@ -17,15 +17,19 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <h4 class="mb-sm-0">Payment_Details Master</h4>
+                                <h4 class="mb-sm-0">Payment Master</h4>
 
-                            <div class="page-title-right">
+                                <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard </a>
                                         </li>
-                                        <li class="breadcrumb-item active">Payment Master </li>
+                                        <li class="breadcrumb-item active">Menu </li>
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Transaction</a>
+                                        </li>
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Payment </a>
+                                        </li>
                                     </ol>
-                                </div> 
+                                </div>
 
                             </div>
                         </div>
@@ -87,12 +91,14 @@
                                                                 {% for i in inv_details_data %}
                                                     
                                                                 <tr align="center">
-                                                                    <td>{{i.Invoiceid.InvoiceNo}}</td>
-                                                                    <td>{{i.Invoiceid.InvoiceDate}}</td>
-                                                                    <td>{{i.Invoiceid.TotalAmount}}</td>
-                                                                    <td>{{i.Invoiceid.DueAmount}}</td>
-                                                                    <td><a href="{% url 'ItemMaster:Payment_Details'   %} " ><i class="fa fa-list" aria-hidden="true"  style="font-size:24px;"></i></td>
-                                                                    <td><a href="{% url 'ItemMaster:Add_Payment_Master' pk=i.id  %} " ><button type="button"  data-target="#mySmallModal" class="btn btn-success">Add Payment</button><a></td>
+                                                                    <td>{{i.InvoiceNo}}</td>
+                                                                    <td>{{i.InvoiceDate}}</td>
+                                                                    <td>{{i.TotalAmount}}</td>
+                                                                    <td>{{i.DueAmount}}</td>
+                                                                    <td><a href="{% url 'ItemMaster:Payment_Details' pk=i.id   %} " ><i class="fa fa-list" aria-hidden="true"  style="font-size:24px;"></i></td>
+                                                                    
+                                                                    <td><a href="{% url 'ItemMaster:Add_Payment_Master' pk=i.id  %} " ><button type="button"  data-target="#mySmallModal" class="btn btn-success" disabled>Add Payment</button ></a></td>
+                                                                    
                                                                 </tr>
                                                                 {% endfor %}
                                                                

@@ -79,12 +79,12 @@
                                                             <div id="waer">
                                                                 <label for="exampleInputrounded" class="required">
                                                                     Warehouse : </label>
-                                                                    <input type="text" class="form-control rounded-pill"  onfocusout="Validatewarehouse()"  onkeyup="Validatewarehouse()" name="warehousename" placeholder="Choose Warehouse"  list="Warehouse" />
-                                                                    <datalist id="Warehouse" >
-                                                                        <optgroup label=" Warehouse">
+                                                                    <input type="text" class="form-control rounded-pill"  onfocusout="Validatewarehouse()"  onkeyup="Validatewarehouse()" name="warehousename" placeholder="Choose Warehouse"  list="warehousename" />
+                                                                    <datalist id="warehousename" >
+                                                                        <optgroup label=" warehousename">
                                                                             {% for i in  wid %}
 
-                                                                            <option >{{i.warehouse_name}}</option>
+                                                                            <option  >{{i.warehouse_name}}</option>
                                                                             
                                                                             {% endfor %}
                                                                     </datalist>
@@ -116,6 +116,7 @@
                                                                     <datalist id="vehicletype" >
                                                                         <optgroup label=" vehicletype">
                                                                         <option>2 wheeler</option>
+                                                                        <option>3 wheeler</option>
                                                                         <option>car</option>
                                                                         <option> Tractor</option>
                                                                         <option> Truck</option>

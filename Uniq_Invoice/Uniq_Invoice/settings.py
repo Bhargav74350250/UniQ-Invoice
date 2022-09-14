@@ -83,7 +83,7 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
-        'PORT': '3306',
+        'PORT': 3307,
     }
 }
 
@@ -144,4 +144,4 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'q5630025@gmail.com'
-EMAIL_HOST_PASSWORD = 'bfakbuxstnkrqsrm'
+EMAIL_HOST_PASSWORD = 'bxfbmhbnllpmerqv'

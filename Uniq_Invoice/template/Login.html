@@ -7,8 +7,15 @@
 <!-- Mirrored from themesbrand.com/velzon/html/default/auth-signin-basic.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 15 Jul 2022 07:56:59 GMT -->
 <head>
 
+    
+    <style>
+      .required:after {
+        content:" *";
+        color: red;
+      }
+    </style>
     <meta charset="utf-8" />
-    <title>Sign In | Velzon - Admin & Dashboard Template</title>
+    <title>Sign In | Uniq Invoice | Uniq Data Solution Private Limited</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
@@ -30,6 +37,17 @@
     <link href="{% static 'css/app.min.css' %}" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="{% static 'css/custom.min.css' %}" rel="stylesheet" type="text/css" />
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  
+    <style>
+        form i {
+            margin-left: -30px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -54,7 +72,7 @@
                         <div class="text-center mt-sm-5 mb-4 text-white-50">
                             <div>
                                 <a href="index.html" class="d-inline-block auth-logo">
-                                    <img src="assets/images/logosocial.png" alt="" height="150">
+                                    <img src="{% static 'assets/images/logosocial.png' %}" alt="" height="150">
                                 </a>
                             </div>
                            
@@ -70,37 +88,47 @@
                             <div class="card-body p-4">
                                 <div class="text-center mt-2">
                                     <h5 class="text-primary">Welcome Back !</h5>
-                                    <p class="text-muted">Sign in to continue to UniQ.</p>
+                                    <p class="text-muted">Sign in to continue to UniQ Invoice.</p>
                                 </div>
                                 <div class="p-2 mt-4">
 
                                   <span style="color:red"{{emailerror}}></span>
                                     <form method="POST" action="{%url 'UniQInvoice:companylogin'%}">
                                       {% csrf_token %}
+                                      <p><b>IMPORTANT : * Are Required Fields</b></p>
                                         <div class="mb-3">
-                                            <label for="username" class="form-label">Username</label>
+                                            <label for="username" class="required">Email</label>
                                             <input type="text" class="form-control" name="email" id="username" placeholder="Enter username">
+                                            {%for message in messages %}
+                                            {%if "logemail" in message.tags %}
+                                                <p style = "color:red"> {{message}} </p>   {# show gst error message #}
+                                            {%endif%}
+                                            {%endfor%}
                                         </div>
 
                                         <div class="mb-3">
-                                            <!-- <div class="float-end">
-                                                <a href="auth-pass-reset-basic.html" class="text-muted">Forgot password?</a>
-                                            </div> -->
-                                            <label class="form-label" for="password-input">Password</label>
+
+                                            <label class="required" for="password-input">Password</label>
                                             <div class="position-relative auth-pass-inputgroup mb-3">
-                                                <input type="password" name="password" class="form-control pe-5" placeholder="Enter password" id="password-input">
-                                                <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
+                                                <input type="password" name="password" class="form-control pe-5" placeholder="Enter password" id="password">
+                                                <!-- <i class="bi bi-eye-slash" id="togglePassword"></i> -->
+                                                {%for message in messages %}
+                                                {%if "loginpass" in message.tags %}
+                                                    <p style = "color:red"> {{message}} </p>   {# show gst error message #}
+                                                {%endif%}
+                                                {%endfor%}
                                             </div>
                                         </div>
-
-                                        <!-- <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="auth-remember-check">
-                                            <label class="form-check-label" for="auth-remember-check">Remember me</label>
-                                        </div> -->
-
+                                        
+                                        {%for message in messages %}
+                                        {%if "log" in message.tags %}
+                                            <p style = "color:red"> {{message}} </p>   {# show gst error message #}
+                                        {%endif%}
+                                        {%endfor%}
                                         <div class="mt-4">
-                                            <button class="btn btn-success w-100" type="submit">Sign In</button>
+                                            <center><button class="btn btn-success w-20" type="submit">Sign In</button></center>
                                         </div>
+                                   
                                         
                                         <!-- {{L_msg}} -->
                                         <div class="mt-4 text-center">
@@ -117,6 +145,26 @@
                                     </form>
                                 </div>
                             </div>
+                            <script>
+                                const togglePassword = document
+                                    .querySelector('#togglePassword');
+                          
+                                const password = document.querySelector('#password');
+                          
+                                togglePassword.addEventListener('click', () => {
+                          
+                                    // Toggle the type attribute using
+                                    // getAttribure() method
+                                    const type = password
+                                        .getAttribute('type') === 'password' ?
+                                        'text' : 'password';
+                                          
+                                    password.setAttribute('type', type);
+                          
+                                    // Toggle the eye and bi-eye icon
+                                    this.classList.toggle('bi-eye');
+                                });
+                            </script>
                             <!-- end card body -->
                         </div>
                         <!-- end card -->
@@ -152,19 +200,19 @@
     <!-- end auth-page-wrapper -->
 
     <!-- JAVASCRIPT -->
-    <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/libs/simplebar/simplebar.min.js"></script>
-    <script src="assets/libs/node-waves/waves.min.js"></script>
-    <script src="assets/libs/feather-icons/feather.min.js"></script>
-    <script src="assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
-    <script src="assets/js/plugins.js"></script>
+    <script src="{% static 'libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'libs/simplebar/simplebar.min.js' %}"></script>
+    <script src="{% static 'libs/node-waves/waves.min.js' %}"></script>
+    <script src="{% static 'libs/feather-icons/feather.min.js' %}"></script>
+    <script src="{% static 'js/pages/plugins/lord-icon-2.1.0.js' %}"></script>
+    <script src="{% static 'js/plugins.js' %}"></script>
 
     <!-- particles js -->
-    <script src="assets/libs/particles.js/particles.js"></script>
+    <script src="{% static 'libs/particles.js/particles.js' %}"></script>
     <!-- particles app js -->
-    <script src="assets/js/pages/particles.app.js"></script>
+    <script src="{% static 'js/pages/particles.app.js' %}"></script>
     <!-- password-addon init -->
-    <script src="assets/js/pages/password-addon.init.js"></script>
+    <script src="{% static 'js/pages/password-addon.init.js' %}"></script>
 </body>
 
 

@@ -52,7 +52,7 @@
                                                 <p><span  class="required"></span> field are required</p>
 
                                             </div><!-- end card header -->
-                                        <form name="itemadd" method="POST" action="{% url 'ItemMaster:Add_Payment_Master' Invoice.id %}"  onsubmit="return validateForm()"  id="mySmallModal">
+                                        <form name="itemadd" method="POST" action="{% url 'ItemMaster:Add_Payment_Master' inv_details_data.id %}"  onsubmit="return validateForm()"  id="mySmallModal">
                                                 {% csrf_token %}
                                     
                                             <div class="card-body">
@@ -86,16 +86,16 @@
                                                         <br>
                                                         <br>
                                                         <div class="col-xxl-6 col-md-6">
-                                                            <div class="input-group" >
-                                                                <label class="input-group-text" for="inputGroupSelect01" >Payment Type </label>
-                                                                <select class="form-select"  id="exampleInputrounded" name="paymenttype"  onfocusout="Validatewarehouse()" id="inputGroupSelect01">
-                                                                   <option selected="">Choose...</option>
+                                                            <div class="input-group" id="pdate" >
+                                                                <label class="input-group-text"  for="inputGroupSelect01" >Payment Type </label>
+                                                                <select class="form-select"   id="exampleInputrounded" name="paymenttype"  onfocusout="Validatewarehouse()" id="inputGroupSelect01">
+                                                                   <option selected="" >Choose...</option>
                                                                   
                                                                     <option value="Bank">Bank</option>
                                                                     <option value="Cash">Cash</option>
                                                                     <option value="Check">Check</option>
                                                                 </select>
-                                                              
+                                                                <span id="pdate1" class="formerror"></span>
                                                             </div>
                                                         </div>
 
@@ -103,7 +103,7 @@
                                                         <br>
                                                        
                                                             <button class="btn btn-primary" name="submit"> Submit </button>
-                                                            <button type="Cancel"  onclick="javascript:window.location='{% url 'ItemMaster:display' %}';" class="btn btn-danger" name="Cancel"> Cancel </button>
+                                                            <button type="Cancel"  onclick="javascript:window.location='{% url 'ItemMaster:Payment_Master' %}';" class="btn btn-danger" name="Cancel"> Cancel </button>
                                                        
                                                     </div>
                                                     <!--end row-->
@@ -157,7 +157,7 @@
             var numberRegex = new RegExp("[0-9]");
             
            
-            var Quantity = document.forms['itemadd']["quantity"].value;
+            var Quantity = document.forms['itemadd']["amount"].value;
 
             if (Quantity.length == "") {
                 seterror("qty", "This field is required");
@@ -180,7 +180,11 @@
                 returnval = false;
             }
 
-           
+            var pdate = document.forms['itemadd']["paymenttype"].value;
+            if (pdate.length == "") {
+                seterror("pdate", "This field is required");
+                returnval = false;
+            }
 
            
               

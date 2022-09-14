@@ -57,7 +57,7 @@
                                             
                                             <div class="card-header align-items-center d-flex">
                                                 <h1 class="card-title mb-0 flex-grow-1">User List</h1>
-                                               <a href="{%url 'ItemMaster:weekreportpdf' %}"><button type="button" class="btn btn-primary" style="float:right "> pdf</button></a> 
+                                               {% comment %} <a href="{%url 'ItemMaster:weekreportpdf' %}"><button type="button" class="btn btn-primary" style="float:right "> pdf</button></a>  {% endcomment %}
                                                 <a href="{%url 'ItemMaster:user'%}"><button type="button" class="btn btn-primary" style="float:right "> + Add New User</button></a>
                                             </div><!-- end card header -->
                                             
@@ -72,6 +72,22 @@
                                            
                                             <!--end card-body-->
                                             <div class="card-body">
+                                                {% for message in messages %}
+                                                {%if "AddItem" in message.tags %}
+                                                    <div class="message">
+                                                        <center><h4><p style = "color:green"> {{message}} </p> </h4></center>
+                                                        <a href="#" class="del-msg">&times;</a>
+                                                    </div>
+                                                {%endif%}
+                                                {% endfor %}
+                                                {% for message in messages %}
+                                                {%if "deleteItem" in message.tags %}
+                                                    <div class="message">
+                                                        <center><h4><p style = "color:red"> {{message}} </p> </h4></center>
+                                                        <a href="#" class="del-msg">&times;</a>
+                                                    </div>
+                                                {%endif%}
+                                                {% endfor %}
                                                 <div class="table-responsive table-card mb-4">
                                                    
                                                         <table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%" id="myTable">  
@@ -82,6 +98,7 @@
                                                                     <th>Last Name</th>
                                                                     <th>Phone Number</th>
                                                                     <th>Email</th>
+                                                                    <th>Change Password</th>
                                                                     <th>Edit</th>
                                                                     <th>Delete</th>
                                                                 </tr> 
@@ -94,8 +111,9 @@
                                                                     <td>{{i.Last_name}}</td>
                                                                     <td align="right">{{i.phone_number}}</td>
                                                                     <td>{{i.email_address}}</td>
+                                                                    <td align="center"><a  href="{% url 'ItemMaster:change_password' pk=i.id  %} " ><i class="fa fa-key"aria-hidden="true"  style="font-size:24px;"></i></a></td>
                                                                     <td align="center"><a  href="{% url 'ItemMaster:user_edit' pk=i.id  %} " ><i class="fa fa-pencil-square-o" aria-hidden="true"  style="font-size:24px;"></i></a></td>
-                                                                    <td align="center"><a  href="{% url 'ItemMaster:delete_user' i.id %}" onclick=" return myfunction()" ><i class="fa fa-trash-o" aria-hidden="true" style="font-size:24px;color:red"></i></a></td>
+                                                                    <td align="center"><a  href="{% url 'ItemMaster:delete_user' i.id %}"  ><i class="fa fa-trash-o" aria-hidden="true" style="font-size:24px;color:red"></i></a></td>
                                                                 </tr>
                                                                 {% endfor%}
                                                             </tbody>

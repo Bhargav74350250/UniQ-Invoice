@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <!-- <h4 class="mb-sm-0">Payment Details Master</h4> -->
+
+                            <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <!-- <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard </a> -->
+                                        </li>
+                                        <!-- <li class="breadcrumb-item active">Payment Master </li> -->
+                                    </ol>
+                                </div> 
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+                    <div class="row">
+                        <div class="col">
+
+                            <div class="h-100">
+                                <div class="row mb-3 pb-1">
+                                    <div class="col-12">
+                                        <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+
+            
+                                        </div><!-- end card header -->
+                                      
+                                    </div>
+                                    <!--end col-->
+                                </div>
+                                <!--end row-->
+                                                                                                                            
+                                <div class="row">
+                                    <div class="col-lg-12  ">                                    
+                                    </div>
+                                    <div class="col-lg-12  ">
+                                        <div class="card" style="padding:25px;">
+                                            <div class="card-header align-items-center d-flex">
+                                                <!-- <h1 class="card-title mb-0 flex-grow-1">Payment Due List </h1> -->
+                                                
+                                                <div class="col-xxl-12 col-md-12">
+                                                   
+                                                        <div class="col-xxl-6 col-md-6">
+                                                            
+                                                            <BR>
+                                                            <BR>
+                
+                                                            <label><b><h4> Select Transaction Option :</h4></b></label>
+                                                            <select name="customers" id="selectedvehicle" style="width: 220px; height:40px;">
+                                                                <option value="Sale">Sale</option>
+                                                                <option value="Purchase">Purchase</option>    
+                                                                <option value="Payment_In">Payment In</option>
+                                                                <option value="Payment_Out">Payment Out</option>
+                                                                <option value="Credit_Note">Credit Note</option>
+                                                                <option value="Debit_Note">Debit Note</option>
+
+                                                            </select>
+                                                        </div>
+                                                    
+                                                    
+                                                </div>
+                                            </div><!-- end card header -->
+                                            
+                                    <div class="col-lg-12">
+                                        <div class="card">
+                                            <div class="card-header border-0">
+                                                 <div class="d-flex align-items-center">
+                                                    <h5 class="card-title mb-0 flex-grow-1"> </h5>
+                                                    <a href="javascript:generatePDF()"><button id="button" class="btn btn-primary" style =" color:#FFF; width: 200px; float:right"><B> Generate PDF </B></button></a>
+                                                </div> 
+                                            </div>
+                                           
+                                            <!--end card-body-->
+                                            <div class="card-body" >
+                                                
+                                                
+                                                
+                                                <div id="makepdf">
+                                                    <center><h2> Transactions </h2></center>
+                                                    <br>
+                                                    <br>
+                                                    <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Date</th>
+                                                                <th>Dealer Name</th>
+                                                                <th>Item Name</th>
+                                                                <th>Transaction Type</th>
+                                                                <th>Total</th>
+                                                                <th>Recieved Payment</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody> 
+                                                            {% for x in itemslist %}
+                                                                <tr>
+                                                                    <td>{{x.Invoiceid.InvoiceDate}}</td>
+                                                                    <td>{{x.Invoiceid.DealerId.dealre_name}}</td>
+                                                                    <td>{{x.Item_id.item_name}}</td>
+                                                                    <td>{{i.Amount}}</td>
+                                                                    <td>{{x.Rate}}</td>
+                                                                    <td></td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                            
+                                                        </tbody>
+                                
+                                                    </table>
+                                                    <script>
+                                                        $("#selectedvehicle").change(function () {
+                                                            output = "";
+                                                            const velinfo = $(this).val();   
+                                                            
+                                                            $.ajax({    
+                                                                headers: {'X-CSRFToken': '{{ csrf_token }}'},                   
+                                                                type: "POST",
+                                                                url: '/vehicle/',
+                                                                data: {
+                                                                    'velinfo': velinfo,       
+                                                                },
+                                                                success: function (data) {   
+                                                                
+                                                                    console.log(data);
+                                                                
+                                                                    console.log(data.vehical_data[0]);
+                                                                    vel = data.vehical_data;
+                                                                    
+                                                                   
+                                                                    console.log(vel)
+                                                                    for (i = 0; i < vel.length; i++) {
+                                                                        
+                                                                            output+="<tr><td>"+vel[i].modelname+"</td><td>"+vel[i].stock+"</td><td>"+vel[i].warehousename+"</td> </tr>" ;
+                                                                    }
+                                                                    
+                                                                    document.getElementById('tableData').innerHTML = output;             
+                                                                
+                                                                }
+                                                                            
+                                                        
+                                                            });
+                                                        });
+                                                    
+                                                    </script>
+                                                   
+
+                                                </div>
+                                                <script>
+                                                    var button = document.getElementById("button");
+                                                    var makepdf = document.getElementById("makepdf");
+                                              
+                                                    button.addEventListener("click", function () {
+                                                        html2pdf().from(makepdf).save();
+                                                    });
+                                                </script>
+                                                <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script> 
+                                                <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+
+                                                    
+                                                        
+                            
+                                                   
+                                                    <!--end table-->
+                                                   
+
+                                                    <!--end table-->
+
+
+                                                    <div class="noresult" style="display: none;">
+                                                        <div class="text-center">
+                                                            <lord-icon src=""
+                                                                trigger="loop"
+                                                                colors="primary:#121331,secondary:#08a88a"
+                                                                style="width:150px;height:75px"></lord-icon>
+                                                            <h5 class="mt-2">Sorry! No Result Found</h5>
+                                                            <p class="text-muted mb-0">We've searched more than 200k+
+                                                                tasks We did not find any tasks for you search.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-end mt-2">
+                                                    <div class="pagination-wrap hstack gap-2" style="display: none;">
+                                                        <a class="page-item pagination-prev disabled" href="#">
+                                                            Previous
+                                                        </a>
+                                                        <ul class="pagination listjs-pagination mb-0">
+                                                            <li class="active"><a class="page" href="#" data-i="1"
+                                                                    data-page="8">1</a></li>
+                                                        </ul>
+                                                        <a class="page-item pagination-next disabled" href="#">
+                                                            Next
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--end card-body-->
+                                        </div>
+                                        <!--end card-->
+                                    </div>
+
+
+                                </div>
+                                <!--end col-->
+                            </div>
+
+
+                        </div> <!-- end .h-100-->
+
+                    </div> <!-- end col -->
+
+                    <!-- end col -->
+                </div>
+
+            </div>
+            <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+     
+       
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

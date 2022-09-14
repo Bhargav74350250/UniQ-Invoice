@@ -138,6 +138,22 @@
                                             <!--end card-body-->
                                             <div class="card-body" style="padding:25px;" >
                                                 <div class="table-responsive table-card mb-4">
+                                                {% for message in messages %}
+                                                {%if "AddItem" in message.tags %}
+                                                    <div class="message">
+                                                        <center><h4><p style = "color:green"> {{message}} </p> </h4></center>
+                                                        <a href="#" class="del-msg">&times;</a>
+                                                    </div>
+                                                {%endif%}
+                                                {% endfor %}
+                                                {% for message in messages %}
+                                                {%if "deleteItem" in message.tags %}
+                                                    <div class="message">
+                                                        <center><h4><p style = "color:red"> {{message}} </p> </h4></center>
+                                                        <a href="#" class="del-msg">&times;</a>
+                                                    </div>
+                                                {%endif%}
+                                                {% endfor %}
                                                    
                                                         <table  class="table table-striped table-bordered table-sm" cellspacing="0" width="100%" id="myTable">  
                                                             <thead class="black white-text">  
@@ -151,10 +167,10 @@
                                                             <tbody>
                                                                 {% for i in wid %}
                                                                 <tr>
-                                                                    <td>{{i.warehouse_name}}</td>
-                                                                    <td>{{i.warehouse_address}}</td>
+                                                                    <td align="center">{{i.warehouse_name}}</td>
+                                                                    <td align="center">{{i.warehouse_address}}</td>
                                                                     <td align="center"><a href="{% url 'ItemMaster:warehouse_edit' pk=i.id  %} "><i class="fa fa-pencil-square-o" aria-hidden="true"  style="font-size:24px;"></i></a> </td>
-                                                                    <td align="center"><a onclick="myfunction()" href="{% url 'ItemMaster:delete_warehouse' i.id %}"><i class="fa fa-trash-o" aria-hidden="true" style="font-size:24px;color:red"></i></a></td>
+                                                                    <td align="center"><a  href="{% url 'ItemMaster:delete_warehouse' i.id %}"><i class="fa fa-trash-o" data-sid={{i.id}} aria-hidden="true" style="font-size:24px;color:red"></i></a></td>
                                                                     
                                                                 </tr>
                                                                 {% endfor%}
@@ -331,6 +347,8 @@
             return returnval;
         }
     </script>
+
+<!--------sweetalert delete---------------->
 
 
 {% endblock %}

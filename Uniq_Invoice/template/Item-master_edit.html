@@ -59,22 +59,23 @@
                                                 <div class="live-preview">
                                                     <div class="row gy-4">
                                                         <div class="col-xxl-6 col-md-6">
-                                                            <div class="input-group" >
-                                                                <label class="input-group-text" for="inputGroupSelect01">Warehouse</label>
-                                                                <select class="form-select" name="warehousename"   id="inputGroupSelect01">
-                                                                   {% comment %} <option selected="">Choose...</option> {% endcomment %}
-                                                                    {% for i in  warehousedata %}
-                                                                  
-                                                                    <option value="{{i.id}}">{{i.warehouse_name}}</option>
-                                                                    
-                                                                    {% endfor %}
-                                                                    
-                                                                </select>
-                                                              
+                                                            <div id="waer">
+                                                                <label for="exampleInputrounded" class="required">
+                                                                    Warehouse : </label>
+                                                                    <input type="text" class="form-control rounded-pill" value="{{imt.warehouse_id.warehouse_name}}"    onfocusout="Validatewarehouse()"  onkeyup="Validatewarehouse()" name="warehousename" placeholder="Choose Warehouse"  list="warehousename" />
+                                                                    <datalist  id="warehousename">
+                                                                        <optgroup  label=" warehousename">
+                                                                            {% for i in  warehousedata %}
+
+                                                                            <option  >{{i.warehouse_name}}</option>
+                                                                            
+                                                                            {% endfor %}
+                                                                    </datalist>
+                                                                    <span id="waer1" class="formerror"></span>
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xxl-6 col-md-6">
+                                                        {% comment %} <div class="col-xxl-6 col-md-6">
                                                             <div class="input-group" >
                                                                 <label class="input-group-text" for="inputGroupSelect01">Vehicle Type</label>
                                                                 <select class="form-select" name="vehicletype"   id="inputGroupSelect01">
@@ -88,8 +89,23 @@
                                                                 </select>
                                                               
                                                             </div>
-                                                        </div>
+                                                        </div> {% endcomment %}
 
+                                                        <div class="col-xxl-6 col-md-6">
+                                                            <div id="vehicle">
+                                                                <label for="exampleInputrounded" class="required">
+                                                                    Vehicle Type: </label>
+                                                                    <input type="text" class="form-control rounded-pill"   onfocusout="Validatevehicle()" value="{{imt.vehicle_type}}" onkeyup="Validatevehicle()" placeholder="Choose vehicletype " name="vehicletype"  list="vehicletype" />
+                                                                    <datalist id="vehicletype" >
+                                                                        <optgroup label=" vehicletype">
+                                                                        <option>2 wheeler</option>
+                                                                        <option>car</option>
+                                                                        <option> Tractor</option>
+                                                                        <option> Truck</option>
+                                                                    </datalist>
+                                                                    <span id="vehicle1" class="formerror"></span>
+                                                            </div>
+                                                        </div>
 
                                                         <div class="col-xxl-6 col-md-6">
                                                             <div id="itmname">
@@ -167,13 +183,31 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-xxl-6 col-md-6">
+                                                        {% comment %} <div class="col-xxl-6 col-md-6">
                                                             <div id="btry">
                                                                 <label for="exampleInputrounded" class="required">
                                                                     Battery Type: </label>
                                                                 <input type="text" class="form-control rounded-pill"
                                                                     value="{{imt.Battery_type}}"   id="exampleInputrounded" name="battery" onfocusout="ValidateBattery()" onkeyup="ValidateBattery()"
                                                                     placeholder="Enter your battery type">
+                                                                    <span id="battery1" class="formerror"></span>
+                                                            </div>
+                                                        </div> {% endcomment %}
+                                                        <div class="col-xxl-6 col-md-6">
+                                                            <div id="btry">
+                                                                <label for="exampleInputrounded" class="required">
+                                                                    Battery Type: </label>
+                                                                    <input type="text" class="form-control rounded-pill" placeholder="Choose Battery type "  value="{{imt.Battery_type}}"  onfocusout="ValidateBattery()"   onkeyup="ValidateBattery()" name="battery" list="battery" />
+                                                                    <datalist  id="battery">
+                                                                        <optgroup label=" Cars">
+                                                                        <option>Flooded Lead Acid Battery (Wet Cell)</option>
+                                                                        <option>Silver Calcium Battery</option>
+                                                                        <option> Enhanced Flooded Battery (EFB)</option>
+                                                                        <option> Absorbent Glass Mat Battery (AGM)</option>
+                                                                        <option> Deep Cycle Battery</option>
+                                                                        <option>Lithium Ion (Li-Ion) Battery </option>
+                                                                        <option> Nickel Metal Hydride Battery</option>
+                                                                    </datalist>
                                                                     <span id="battery1" class="formerror"></span>
                                                             </div>
                                                         </div>

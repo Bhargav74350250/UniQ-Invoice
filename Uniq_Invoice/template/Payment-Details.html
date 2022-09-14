@@ -80,8 +80,8 @@
                                                                     <th>Payment Date</th>
                                                                     <th>Amount</th>
                                                                     <th>Payment Type</th>
-                                                                    <th>Edit</th>
-                                                                    <th>Delete</th>
+                                                                    {% comment %} <th>Edit</th> {% endcomment %}
+                                                                    {% comment %} <th>Delete</th> {% endcomment %}
                                                                 </tr> 
                                                              
                                                             </thead>  
@@ -91,8 +91,9 @@
                                                                     <td align="center">{{i.Payment_Date}}</td>
                                                                     <td align="right">{{i.Amount}}</td>
                                                                     <td  align="center">{{i.Payment_Id}}</td>
-                                                                    <td align="center"><a  href="{% url 'ItemMaster:user_edit' pk=i.id  %} " ><i class="fa fa-pencil-square-o" aria-hidden="true"  style="font-size:24px;"></i></a></td>
-                                                                    <td align="center"><a  href="{% url 'ItemMaster:delete_user' i.id %}" onclick=" return myfunction()" ><i class="fa fa-trash-o" aria-hidden="true" style="font-size:24px;color:red"></i></a></td>
+                                                                    {% comment %} <td align="center"><a  href="{% url 'ItemMaster:Edit_Payment' pk=i.id  %} " ><i class="fa fa-pencil-square-o" aria-hidden="true"  style="font-size:24px;"></i></a></td> {% endcomment %}
+                                                                    {% comment %} <td align="center"><a onclick="return confirm( 'Are You sure You Want To Delete ??');" href="{% url 'ItemMaster:Payment_Delete' pk=i.id %}"><i class="fa fa-trash-o" aria-hidden="true" style="font-size:24px;color:red"></i></a></td> {% endcomment %}
+
                                                                 </tr>
                                                                 {% endfor%}
                                                             </tbody>

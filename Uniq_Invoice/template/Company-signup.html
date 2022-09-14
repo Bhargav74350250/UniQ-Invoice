@@ -5,7 +5,12 @@
 
 <!-- Mirrored from themesbrand.com/velzon/html/default/auth-signin-basic.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 15 Jul 2022 07:56:59 GMT -->
 <head>
-
+    <style>
+        .required:after {
+          content:" *";
+          color: red;
+        }
+    </style>
     <meta charset="utf-8" />
     <title>Sign In | Velzon - Admin & Dashboard Template</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -70,24 +75,25 @@
                                 <div class="p-2 mt-4">
                                     <form method = "POST" action="/">
                                         {% csrf_token %}
+                                        <p><b><h5>IMPORTANT : * Are Required Fields</h5></b></p><br>
                                         <div class="row gy-4">
                                                         
                                             <div class="col-xxl-6 col-md-6">
                                                  <div>
-                                                     <label for="exampleInputrounded" class="form-label"> Company Name: </label>
+                                                     <label for="exampleInputrounded" class="required"> Company Name: </label>
                                                      <input type="text" name = "Company_Name" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Enter your Company Name" required>
                                                  </div>
                                              </div>
                                              <div class="col-xxl-6 col-md-6">
                                                 <div>
-                                                    <label for="exampleInputrounded" class="form-label"> Owner Name : </label>
+                                                    <label for="exampleInputrounded" class="required"> Owner Name : </label>
                                                     <input type="text" name = "Owner_Name" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Enter your Name" required>
                                                 </div>
                                             </div>
                                         
                                              <div class="col-xxl-6 col-md-6">
                                                 <div>
-                                                    <label for="exampleInputrounded" class="form-label"> GST Number : </label>
+                                                    <label for="exampleInputrounded" class="required"> GST Number : </label>
                                                     <input type="text" name = "GST_Number" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Enter your GST Number" required>
                                                 </div>
                                                 {% if g_msg %}
@@ -99,13 +105,13 @@
                                              
                                              <div class="col-xxl-6 col-md-6">
                                                  <div>
-                                                     <label for="exampleInputrounded" class="form-label"> Company Address : </label>
+                                                     <label for="exampleInputrounded" class="required"> Company Address : </label>
                                                      <input type="text" name = "Address" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Enter your Address" required>
                                                  </div>
                                              </div>
                                              <div class="col-xxl-6 col-md-6">
                                                  <div>
-                                                     <label for="exampleInputrounded" class="form-label"> Email ID : </label>
+                                                     <label for="exampleInputrounded" class="required"> Email ID : </label>
                                                      <input type="email" name = "Email_Address" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Enter your Email" required>
                                                  </div>
                                                  {% if e_msg %}
@@ -118,8 +124,8 @@
                                              
                                              <div class="col-xxl-6 col-md-6">
                                                 <div>
-                                                    <label for="exampleInputrounded" class="form-label"> Mobile Number : </label>
-                                                    <input type="text" name = "Phone_Number" class="form-control rounded-pill" id="exampleInputrounded"  placeholder="Enter your Number" required>
+                                                    <label for="exampleInputrounded" class="required"> Mobile Number : </label>
+                                                    <input type="text" name = "Phone_Number" maxlength="10" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Enter your Number" required>
                                                 </div>
                                                 {% if m_msg %}
                                                 <div style = "color:red"  class="alert alert-danger" role="alert">
@@ -131,13 +137,13 @@
 
                                              <div class="col-xxl-6 col-md-6">
                                                  <div>
-                                                     <label for="exampleInputrounded" class="form-label"> Office Number</label>
-                                                     <input type="text"  name = "Office_Number" class="form-control rounded-pill"  id="exampleInputrounded" placeholder="Enter your Office Number" required>
+                                                     <label for="exampleInputrounded" class="required"> Office Number</label>
+                                                     <input type="text" maxlength = "10" name = "Office_Number" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Enter your Office Number" required>
                                                  </div>
                                              </div>
                                              <div class="col-xxl-6 col-md-6">
                                                 <div>
-                                                    <label for="exampleInputrounded" class="form-label"> Company Website URL : </label>
+                                                    <label for="exampleInputrounded"> Company Website URL : </label>
                                                     <input type="text"  name = "Company_website"class="form-control rounded-pill" id="exampleInputrounded" placeholder="Enter your Website" required>
                                                 </div>
                                             </div>
@@ -146,7 +152,7 @@
                                   
 
                                         <div class="mt-4">
-                                            <button class="btn btn-success w-100" type="submit">Submit</button>
+                                            <center><button class="btn btn-success w-20" type="submit">Submit</button></center>
                                         </div>
 
                                         <center><span ><h4style="color:green;">{{success_msg}}</h4></span></center>

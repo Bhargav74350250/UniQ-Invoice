@@ -15,6 +15,23 @@ import string
 
 # Create your views here.
 
+
+labels = [
+    'JAN', 'FEB', 'MAR', 'APR',
+    'MAY', 'JUN', 'JUL', 'AUG',
+    'SEP', 'OCT', 'NOV'
+]
+
+values = [
+    967.67, 1190.89, 1079.75, 1349.19,
+    2328.91, 2504.28, 2873.83, 4764.87,
+    4349.29, 6458.30, 9907
+]
+
+colors = [
+    "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA",
+    "#ABCDEF", "#DDDDDD", "#ABCABC", "#4169E1",
+    "#C71585", "#FF4500", "#FEDCBA", "#46BFBD"]
 def AdminCanWatch(request):
     
     allcompany = Company_Master.objects.all()
@@ -146,12 +163,25 @@ def Company_register(request):
   
 
 
-
+def Dashboard(request):
+    try:
+        user = request.session['email']
+        uid = Login_Master.objects.get(User_Name=user)
+        if uid is not None:
+            lid = Login_Master.objects.get(id = request.session['id'])
+            companyname = Company_Master.objects.get(id = lid.Company_id_id)
+            return render(request, 'index.html',{'companyname':companyname,'user':user,'uid':uid, 'labels': labels, 'values': values})
+        else:
+            return redirect('/companylogin/')
+    except:
+        messages.error(request,'you have to login first')
+        return redirect('/companylogin/')
+ 
     
     
   
     
-def Dashboard(request):
+# def Dashboard(request):
     try:
         user = request.session['email']
         uid = Login_Master.objects.get(User_Name=user)
@@ -208,7 +238,7 @@ def dealercanwatch(request):
         lid = Login_Master.objects.get(id = request.session['id'])
         companyname = Company_Master.objects.get(id = lid.Company_id_id)
     
-        alldealer = Dealer_Master.objects.filter(IsDeleted='0',IsDealer='1')
+        alldealer = Dealer_Master.objects.filter(IsDeleted='0',IsDealer='1',Company_id=companyname)
         
         # print(type(allcompany[0].IsActive))
         
@@ -220,88 +250,91 @@ def dealercanwatch(request):
 
 def add_Dealer_Master(request):
     
+    if 'id' in request.session:
+        if request.method == "POST":
+            dealer_company_name=request.POST.get('dealer_company_name')
+            dealre_name=request.POST.get('dealre_name')
+            dealer_address=request.POST.get('dealer_address')
+            gst_number=request.POST.get('gst_number')
+            dealer_email_address=request.POST.get('dealer_email_address')
+            dealer_phone_number=request.POST.get('dealer_phone_number')
+            dealer_office_number=request.POST.get('dealer_office_number')
+            CreatedDate=datetime.date.today()
+            ModifiedDate=datetime.date.today()
 
-    if request.method == "POST":
-        dealer_company_name=request.POST.get('dealer_company_name')
-        dealre_name=request.POST.get('dealre_name')
-        dealer_address=request.POST.get('dealer_address')
-        gst_number=request.POST.get('gst_number')
-        dealer_email_address=request.POST.get('dealer_email_address')
-        dealer_phone_number=request.POST.get('dealer_phone_number')
-        dealer_office_number=request.POST.get('dealer_office_number')
-        CreatedDate=datetime.date.today()
-        ModifiedDate=datetime.date.today()
+            print(request.session['id'])
+            L_id = Login_Master.objects.get(id=request.session['id'])
+            
+            cid = Company_Master.objects.get(id=L_id.Company_id_id)
+            
+            
+            # if len(gst_number)== 15:
+            #     print("valid")
+            #     pass
+            # else:
+            
+            #     # print("invalid",sel_dealer)
+            #     g_msg = "YOU HAVE TO ENTER 15 DIGIT"
+            #     return render(request, "Dealermaster.html", {'g_msg':g_msg})
+            
+            regex = r'\b[A-Za-z0-9._%+-]+@gmail.com\b'
+        
+            if(re.fullmatch(regex, dealer_email_address)):
+                pass   
+            else:
+                sel_dealer= Dealer_Master.objects.get(id = id)
+                print("invalid email")
+                e_msg = "PLEASE ENTER VALID EMAIL"
 
-        print(request.session['id'])
-        L_id = Login_Master.objects.get(id=request.session['id'])
-        
-        cid = Company_Master.objects.get(id=L_id.Company_id_id)
+                return render(request,"Dealermaster.html",{'e_msg':e_msg})
         
         
-        # if len(gst_number)== 15:
-        #     print("valid")
-        #     pass
-        # else:
-           
-        #     # print("invalid",sel_dealer)
-        #     g_msg = "YOU HAVE TO ENTER 15 DIGIT"
-        #     return render(request, "Dealermaster.html", {'g_msg':g_msg})
+            # print("PLEASE ENTER UNIQ EMAIL")
+            # e_msg = "PLEASE ENTER VALID EMAIL"
+            # return redirect(request,"Dealermaster.html", {'e_msg':e_msg})
+            # return render(request,"select_dealer.html",{'e_msg':e_msg})
         
-        regex = r'\b[A-Za-z0-9._%+-]+@gmail.com\b'
-    
-        if(re.fullmatch(regex, dealer_email_address)):
-            pass   
+            
+            
+            if dealer_phone_number.isdigit():
+                if len(dealer_phone_number)== 10:
+                    print("valid")
+                    pass
+            else:
+                sel_dealer= Dealer_Master.objects.get(id = id)
+                print("invalid")
+                m_msg = "YOU SHOULD ENTER 10 DIGIT"
+                # return redirect('/select_Dealer_Master/{{sel_dealer}}', {'m_msg':m_msg})
+                return render(request,"Dealermaster.html",{'m_msg':m_msg})
+
+
+
+            
+            DealerMaster = Dealer_Master.objects.create(Company_id_id = cid.id, dealer_company_name = dealer_company_name,dealre_name = dealre_name,dealer_address = dealer_address,gst_number=gst_number,dealer_email_address=dealer_email_address,dealer_phone_number =dealer_phone_number,dealer_office_number=dealer_office_number,IsActive='1',IsDeleted='0',CreatedBy='raj',CreatedDate=ModifiedDate,ModifiedBy='raj',ModifiedDate=ModifiedDate ,IsDealer='True')
+            alldealer = Dealer_Master.objects.filter(IsDeleted='0',IsDealer='1')
+            return redirect('/dealercanwatch/')
+            return render(request,"dealer_view.html",{'alldealer':alldealer})
         else:
-            sel_dealer= Dealer_Master.objects.get(id = id)
-            print("invalid email")
-            e_msg = "PLEASE ENTER VALID EMAIL"
+            return render(request,"Dealermaster.html")
+            # pass
 
-            return render(request,"Dealermaster.html",{'e_msg':e_msg})
-    
-    
-        # print("PLEASE ENTER UNIQ EMAIL")
-        # e_msg = "PLEASE ENTER VALID EMAIL"
-        # return redirect(request,"Dealermaster.html", {'e_msg':e_msg})
-        # return render(request,"select_dealer.html",{'e_msg':e_msg})
-    
-        
-        
-        if dealer_phone_number.isdigit():
-            if len(dealer_phone_number)== 10:
-                print("valid")
-                pass
-        else:
-            sel_dealer= Dealer_Master.objects.get(id = id)
-            print("invalid")
-            m_msg = "YOU SHOULD ENTER 10 DIGIT"
-            # return redirect('/select_Dealer_Master/{{sel_dealer}}', {'m_msg':m_msg})
-            return render(request,"Dealermaster.html",{'m_msg':m_msg})
-
-
-
-        
-        DealerMaster = Dealer_Master.objects.create(Company_id_id = cid.id, dealer_company_name = dealer_company_name,dealre_name = dealre_name,dealer_address = dealer_address,gst_number=gst_number,dealer_email_address=dealer_email_address,dealer_phone_number =dealer_phone_number,dealer_office_number=dealer_office_number,IsActive='1',IsDeleted='0',CreatedBy='raj',CreatedDate=ModifiedDate,ModifiedBy='raj',ModifiedDate=ModifiedDate ,IsDealer='True')
-        alldealer = Dealer_Master.objects.filter(IsDeleted='0',IsDealer='1')
-       
-        return render(request,"dealer_view.html",{'alldealer':alldealer})
     else:
-        return render(request,"Dealermaster.html")
-        # pass
-        
-    return render(request,'company_dash.html')   
+        return redirect('/companylogin/')       
+        return render(request,'company_dash.html')   
 
 def customer_all(request):
     if 'id'  in request.session:
         lid = Login_Master.objects.get(id = request.session['id'])
         companyname = Company_Master.objects.get(id = lid.Company_id_id)
-        customer = Dealer_Master.objects.filter(IsDeleted='0',IsDealer='0')
+        customer = Dealer_Master.objects.filter(IsDeleted='0',IsDealer='0',Company_id=companyname)
         return render(request,'customer_view.html',{'customer':customer,'companyname':companyname})
     else:
-        return render(request, 'Login.html')
+        return redirect('/companylogin/') 
 
 
     
 def Customer_Master(request):
+
     if request.method == "POST":
         customer_company_name=request.POST.get('company_name')
         customer_name=request.POST.get('dealre_name')
@@ -363,7 +396,7 @@ def Customer_Master(request):
         
         DealerMaster = Dealer_Master.objects.create(Company_id_id = cid.id, dealer_company_name = customer_company_name,dealre_name = customer_name,dealer_address = customer_address,gst_number=customer_gst_number,dealer_email_address=customer_email_address,dealer_phone_number =customer_phone_number,dealer_office_number=customer_office_number,IsActive='1',IsDeleted='0',CreatedBy='raj',CreatedDate=ModifiedDate,ModifiedBy='raj',ModifiedDate=ModifiedDate ,IsDealer='False' )
         customer = Dealer_Master.objects.filter(IsDeleted='0',IsDealer='0')
-       
+        return redirect('/customer_all/') 
         return render(request,"customer_view.html",{'customer':customer})
     else:
         lid = Login_Master.objects.get(id = request.session['id'])
@@ -441,6 +474,7 @@ def select_Customer_Master(request,pk):
 
 
 def delete_Customer_Master(request,pk):
+
     del_dealer = Dealer_Master.objects.get(id=pk)
     del_dealer.IsDeleted=1
     del_dealer.save()
